@@ -1,207 +1,73 @@
-<!DOCTYPE HTML>
-<html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width">
-<title>jon.barkei.lol</title>
-<link rel="icon" href="pixil-frame-0.png" type="image/png" sizes="16x16 32x32">
-<script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js'></script>
-
-<style>
-@font-face {
-  font-family: 'VGAsquarePx';
-  src: url(webfonts/vga_squarepx.eot);
-  src: url(webfonts/vga_squarepx.eot?#iefix) format('embedded-opentype'),
-       url(webfonts/vga_squarepx.woff2) format('woff2'),
-       url(webfonts/vga_squarepx.woff) format('woff'),
-       url(webfonts/vga_squarepx.ttf) format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-* {font-family:VGAsquarePx, monospace;
-	font-size:24px;
-	line-height:24px;
-	font-smooth: never;
- -webkit-font-smoothing : none;}
-
-body    {margin:0; padding:1em; border-top: 1.5em red solid; background-color: #555; 
-		  color: #FFF;}
-
-h1, 		
-h2, 		
-h3 		{ font-weight: normal; font-size: 1em; }
-
-h3 		  { background-color: #aaa;}
-h3 span { color: #fff;background-color: #555; padding: 0 .5em 0 .5em; margin-left: 1em; height:24px;}
-
-h2  { padding: 0 0 11px 18px; margin-bottom: 11px; border-bottom: 2px solid #FFF; color:#fff;}
-
-button,
-.button	{ background-color: #FFF; color:#00A; padding: 0 .5em 0 .5em; 
-		  box-shadow:.5em .5em black;}
-
-pre { font-family: VGAsquarePx, monospace; font-size:24px; line-height:24px; margin:0; font-weight: normal; word-wrap: break-word; padding:0;}
-
-
-p  			{ font-size: 1em; margin-left:1em; margin-right: 1em; padding:0;}
-ul 			{margin: 0; padding:0; margin-left:18px;}
-ul ol 	{ font-size: 1em}
-ul li 	{ list-style-type: none; margin: 0;}
-li:before {content: '\2192'; padding-right:9px; margin:0;}
-a:hover { background: #ffa }
-th 			{ font-size: 1em }
-
-.noselect {-webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
-
-header  { display:float; position: absolute; top:1em; right: 1em; 
-	      background-color: #000; color:#FFF; padding:0 .5em 0 .5em; height:24px; cursor:pointer;}
-
-footer 	{ position: fixed; left:0; bottom:0; right:0; color:#aaa; background-color: #555;}
-footer span {background-color: #000; color:#FFF;}
-
-a 		{ color:#ff5; text-decoration: none;}
-a:before {content:'<'; color:#000; border-bottom: unset}
-a:after {content:'>'; color:#000; border-bottom: unset}
-a:hover { background-color:rgba(0,0,0,0.5); }
-
-.fg0 {color: #000} .fg1 {color: #00a} .fg2 {color: #0a0}
-.fg3 {color: #0aa} .fg4 {color: #a00} .fg5 {color: #a0a}
-.fg6 {color: #a50} .fg7 {color: #aaa} .fg8 {color: #555}
-.fg9 {color: #55f} .fg10 {color: #5f5} .fg11 {color: #5ff}
-.fg12 {color: #f55} .fg13 {color: #f5f} .fg14 {color: #FF5}
-.fg15 {color: #FFF}
-
-.bg0 {background-color: #000} .bg1 {background-color: #00a} .bg2 {background-color: #0a0}
-.bg3 {background-color: #0aa} .bg4 {background-color: #a00} .bg5 {background-color: #a0a}
-.bg6 {background-color: #a50} .bg7 {background-color: #aaa} .bg8 {background-color: #555}
-.bg9 {background-color: #55f} .bg10 {background-color: #5f5} .bg11 {background-color: #5ff}
-.bg12 {background-color: #f55} .bg13 {background-color: #f5f} .bg14 {background-color: #FF5}
-.bg15 {background-color: #FFF}
-
-.pad1 {padding-left:9px; padding-right: 9px;}
-.pad2 {padding-left:18px; padding-right: 18px;}
-.padTop {padding-top:24px;}
-.padBottom {padding-bottom: 24px;}
-
-
-::-webkit-scrollbar-button:start:decrement,
-::-webkit-scrollbar-button:end:increment {display: block; height: 24px; border-radius: 0px; background-color: #FFF; padding:0; margin:0;}
-::-webkit-scrollbar-button:vertical:decrement{ 
-	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAYCAYAAAD3Va0xAAAAU0lEQVR42u3SQQ4AEAxE0f77H5oNGylKSyzMAV7SziAiSQJCgXA66SpUT8cDtf9jB+qVwAo0axILZJ0DI2h1U2jQ7jA5BmkJqf9DH3oOsiYecicDs9VAAewly8IAAAAASUVORK5CYII=');
-	background-repeat: no-repeat;}
-::-webkit-scrollbar-button:vertical:increment {
-	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAYCAYAAAD3Va0xAAAAVklEQVR42u3USQoAIAgF0P/vf2jbRDQXWlGQa33gUAQgWBD0EI2OHIPytvmhDz0HaR8vt0FQYKGuNqNZLKlpDXuEFfm9rckkMoRqmPqOYqybc++fbQ4Hs9VAAQXONBoAAAAASUVORK5CYII=');
-	background-repeat: no-repeat;}
-::-webkit-scrollbar-thumb{ background-color: #FFF; border-left:2px solid #000; border-right:2px solid #000;} 
-::-webkit-scrollbar-track{ background-color: #aaa;  border-left:2px solid #000; border-right:2px solid #000;} 
-::-webkit-scrollbar{ width: 18px; }
-
-
-.box { position: relative; }
-.box:before {	content:'';	position: absolute;	top:0; left:0; right:0; bottom:0;	border:2px solid #FFF; pointer-events: none;}
-
-.shadow {box-shadow: 18px 24px 0px 0px rgba(0,0,0,0.75); margin-bottom: 24px;	margin-right: 18px;}
-
-.dialogTitle { position: absolute; left:0;	top:0; text-align: center; width: 100%; height:24px; cursor: default; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; background-repeat: no-repeat; background-position: left top; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAYCAYAAAD3Va0xAAAAL0lEQVR42mNkoA74zwhjUGAI46hBowYNeoMYSTDgP10MGnxhNGrQqEGUGEQp+A8AQlUwAX8C/BQAAAAASUVORK5CYII=');}
-
-.groupBox { position: relative;	padding-top: 24px; margin-bottom: 24px;}
-.groupBox:before { content:''; position: absolute; top:12px; left:0; right:0; bottom:-2px;	border:2px solid;}
-.groupBoxTitle { position: absolute; top:0; left:9px;	white-space: pre;}
-
-.shadowButton {	cursor: default; background-color: #aaa; color:#005; white-space: pre; box-shadow: 9px 12px 0px 0px rgba(0,0,0,1);
-		 -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
-.shadowButton:before {content:'\00a0\00a0';}
-.shadowButton:after {content:'\00a0\00a0';}
-.shadowButton:hover {background-color:#FFF;}
-.shadowButton:hover:before {content:'\25BA\00a0'; color:#00a;}
-.shadowButton:hover:after {content:'\00a0\25C4'; color:#00a;}
-.shadowButton:active {box-shadow:0px 12px 0px 0px rgba(0,0,0,1);; margin-left:9px;}
-
-.divider {width:100%; margin-top:11px; border-top: 2px solid;	padding-bottom: 11px;}
-
-.aboutDialog {
-	position: fixed;
-	top: 50%;
-	left:50%;
-	transform: translateY(-50%) translateX(-50%);
-	width:calc(60*9px);
-	height:calc(16*24px);
-	text-align: left;
-	z-index: 3
-}
-
-@media (min-width: 800px) 
-		{
-		.2columns { margin: 0 auto;}
-		.left     { float:left; width:48%;}
-		.right    { float:right; width:48%;}
-		}
-
-</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barkei.lol</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body bgcolor="#ffffff" link="#ff0000" alink="#000000" vlink="#b00000">
-<header data-bind="click:function(){aboutBoxShown(true)}" title="About This Website">jon.barkei</header>
+<body>
+    <header>
+        <div class="container">
+            <h1>Barkei.lol</h1>
+            <nav>
+                <ul>
+                    <li><a href="#bio">Bio</a></li>
+                    <li><a href="#links">Links</a></li>
+                    <li><a href="#game">Game</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
+    <section id="hero">
+        <div class="hero-content">
+            <h2>Welcome to Barkei.lol</h2>
+            <p>Your hub for creativity, entertainment, and fun</p>
+        </div>
+    </section>
 
-<!-- ko if: aboutBoxShown -->
-<div class="aboutDialog box bg11 fg0 shadow pad2 padTop">
-<div class="dialogTitle bg15 fg1">About This Website</div>
-<pre>
+    <section id="bio">
+        <div class="container">
+            <h2>About Me</h2>
+            <p>Hi, I'm Jon Barkei. This is my website. I am a freelancer video editor who does jobs on the side. I specialize in Premier Pro, Photoshop, InDesign, and Final Cut Pro. I also develop a whole bunch of websites whenever I get an idea. I am currently in school though and am focusing on that for right now. Below are some links to get you to know me more.
+                My account is on <a href=https://github.com/Jonbarkei>Github</a> where you can see all the websites I have made and how they run. <br> <br>Reach out, and I will reach back ;)</p>
+        </div>
+    </section>
 
-  jon.barkei.lol
-  Version 3.0
-  ⓒ 2023 by Jon Barkei.
+    <section id="links">
+        <div class="container">
+            <h2>Links</h2>
+            <ul>
+                <li><a href="https://www.linkedin.com/in/jonathan-barkei-67a21326b/" target="LinkedIn">LinkedIn</a></li>
+                <li><a href="https://www.bombasticwhips.com/" target="Company">Bombastic Whips</a></li>
+                <li><a href="https://www.instagram.com/bombasticwhips/" target="Insta">Instagram</a></li>
+                <li><a href="https://www.youtube.com/@bombasticwhips" target="Insta">Youtube (BW)</a></li>
+                <li><a href="https://www.youtube.com/@NintenTunesMusic" target="Nintentunes">Nintentunes</a></li>
+            </ul>
+        </div>
+    </section>
 
-</pre>
-<div class="groupBox pad1" style="width:calc(40 * 9px)"><div class="groupBoxTitle fg12 bg11"> Registered To </div>
-me<br>
+    <section id="game">
+        <div class="container">
+            <h1>Rock Paper Scissors Game</h1>
+            <div id="game-area">
+                <p id="result">Make your move!</p>
+                <button onclick="playGame('rock')">Rock</button>
+                <button onclick="playGame('paper')">Paper</button>
+                <button onclick="playGame('scissors')">Scissors</button>
+            </div>
+        </div>
+    </section>
 
-</div>
-<div class="groupBox pad1" style="width:calc(40 * 9px)"><div class="groupBoxTitle fg12 bg11"> System Information </div><pre>
-System Version: 3.0
-Revision:       7
-</pre></div>
-<a href="#" title="Close." class="shadowButton noselect" style="position: absolute; left:calc(50*9px);top:calc(2*24px)" data-bind="click:function(){aboutBoxShown(false)}">  Back   </a>
-</div>
-<!-- /ko -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Barkei.lol. All rights reserved.</p>
+        </div>
+    </footer>
 
-<div class="box fg15 bg9 shadow pad2 padTop padBottom">
-About Me
-<div class="divider"></div>
-Hi, I'm Jon Barkei. This is my website. I am a freelancer video editor who does jobs on the side. I specialize in Premier Pro, Photoshop, InDesign, and Final Cut Pro. I also develop a whole bunch of websites whenever I get an idea. I am currently in school though and am focusing on that for right now. Below are some links to get you to know me more. Reach out, and I will reach back ;)
-My account is on <a href=https://github.com/Jonbarkei>Github</a> where you can see all the websites I have made and how they run.
-</div>
-
-<h2><span>Links</span></h2>
-	
-<a href="./photoshop.html">My different photos</a>
-	<br>
-	<a href=https://github.com/Jonbarkei>Github</a>
-		<br>
-	<a href=https://www.linkedin.com/in/jonathan-barkei-67a21326b/>LinkedIn</a>
-
-	<br>
-	<br>
-	<br>
-	<br>
-<a href="https://info.flagcounter.com/uS4J"><img src="https://s01.flagcounter.com/countxl/uS4J/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_11/viewers_0/labels_0/pageviews_1/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
-	<br>
-	
-	<br>
-	
-<footer>
-  
-	Items on this page are Copyright © 2024 by Jonathan Barkei. All rights reserved. 
-</footer>
-
-	<script>
-(function(){
-	var that={}
-
-	that.aboutBoxShown=ko.observable(false)
-
-	ko.applyBindings(that)
-	return that
-})()
-</script>
-</body></html>
+    <script src="script.js"></script>
+</body>
+</html>
