@@ -7,23 +7,26 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-      <style>
-    * { margin: 0; padding: 0; }
-    body { display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #333; color: #fff; }
-    canvas { background-color: #000; }
-    .score { position: absolute; top: 10px; left: 10px; font-size: 24px; }
-  </style>
+    <style>
+        * { margin: 0; padding: 0; }
+        body { display: flex; flex-direction: column; align-items: center; background-color: #333; color: #fff; }
+        canvas { background-color: #000; margin-top: 20px; }
+        .score { position: absolute; top: 10px; left: 10px; font-size: 24px; }
+        header, section, footer { width: 100%; text-align: center; }
+        ul { list-style-type: none; }
+        ul li { display: inline; margin: 0 15px; }
+        a { color: #fff; text-decoration: none; }
+    </style>
 </head>
 <body>
     <header>
-        
         <div class="container">
             <h1>Barkei.lol</h1>
             <nav>
                 <ul>
                     <li><a href="#bio">Bio</a></li>
                     <li><a href="#links">Links</a></li>
-                    <li><a href="#Play Snake">Game</a></li>
+                    <li><a href="#game">Game</a></li>
                 </ul>
             </nav>
         </div>
@@ -40,7 +43,7 @@
         <div class="container">
             <h2>About Me</h2>
             <p>Hi, I'm Jon Barkei. This is my website. I am a freelancer video editor who does jobs on the side. I specialize in Premier Pro, Photoshop, InDesign, and Final Cut Pro. I also develop a whole bunch of websites whenever I get an idea. I am currently in school though and am focusing on that for right now. Below are some links to get you to know me more.
-                My account is on <a href=https://github.com/Jonbarkei>Github</a> where you can see all the websites I have made and how they run. <br> <br>Reach out, and I will reach back ;)</p>
+            My account is on <a href="https://github.com/Jonbarkei" target="_blank">Github</a> where you can see all the websites I have made and how they run. <br> <br>Reach out, and I will reach back ;)</p>
         </div>
     </section>
 
@@ -48,111 +51,103 @@
         <div class="container">
             <h2>Links</h2>
             <ul>
-                <li><a href="https://www.linkedin.com/in/jonathan-barkei-67a21326b/" target="LinkedIn">LinkedIn</a></li>
-                <li><a href="https://www.bombasticwhips.com/" target="Company">Bombastic Whips</a></li>
-                <li><a href="https://www.instagram.com/bombasticwhips/" target="Insta">Instagram</a></li>
-                <li><a href="https://www.youtube.com/@bombasticwhips" target="Insta">Youtube (BW)</a></li>
-                <li><a href="https://www.youtube.com/@NintenTunesMusic" target="Nintentunes">Nintentunes</a></li>
+                <li><a href="https://www.linkedin.com/in/jonathan-barkei-67a21326b/" target="_blank">LinkedIn</a></li>
+                <li><a href="https://www.bombasticwhips.com/" target="_blank">Bombastic Whips</a></li>
+                <li><a href="https://www.instagram.com/bombasticwhips/" target="_blank">Instagram</a></li>
+                <li><a href="https://www.youtube.com/@bombasticwhips" target="_blank">YouTube (BW)</a></li>
+                <li><a href="https://www.youtube.com/@NintenTunesMusic" target="_blank">Nintentunes</a></li>
             </ul>
         </div>
     </section>
 
-    <section id="Play Snake">
+    <section id="game">
+        <div class="score">Score: <span id="score">0</span></div>
+        <canvas id="gameCanvas" width="400" height="400"></canvas>
 
+        <script>
+            const canvas = document.getElementById('gameCanvas');
+            const ctx = canvas.getContext('2d');
+            const box = 20;
+            let score = 0;
 
+            let snake = [{ x: 9 * box, y: 9 * box }];
+            let food = {
+                x: Math.floor(Math.random() * 19) * box,
+                y: Math.floor(Math.random() * 19) * box
+            };
 
+            let direction;
 
-  <div class="score">Score: <span id="score">0</span></div>
-  <canvas id="gameCanvas" width="400" height="400"></canvas>
+            document.addEventListener('keydown', changeDirection);
 
-  <script>
-    const canvas = document.getElementById('gameCanvas');
-    const ctx = canvas.getContext('2d');
-    const box = 20;
-    let score = 0;
+            function changeDirection(event) {
+                if (event.key === 'ArrowUp' && direction !== 'DOWN') direction = 'UP';
+                else if (event.key === 'ArrowDown' && direction !== 'UP') direction = 'DOWN';
+                else if (event.key === 'ArrowLeft' && direction !== 'RIGHT') direction = 'LEFT';
+                else if (event.key === 'ArrowRight' && direction !== 'LEFT') direction = 'RIGHT';
+            }
 
-    let snake = [{ x: 9 * box, y: 9 * box }];
-    let food = {
-      x: Math.floor(Math.random() * 19) * box,
-      y: Math.floor(Math.random() * 19) * box
-    };
+            function drawSnake() {
+                for (let i = 0; i < snake.length; i++) {
+                    ctx.fillStyle = i === 0 ? 'lime' : 'white';
+                    ctx.fillRect(snake[i].x, snake[i].y, box, box);
+                    ctx.strokeStyle = 'black';
+                    ctx.strokeRect(snake[i].x, snake[i].y, box, box);
+                }
+            }
 
-    let direction;
-    
-    document.addEventListener('keydown', changeDirection);
+            function moveSnake() {
+                let head = { x: snake[0].x, y: snake[0].y };
 
-    function changeDirection(event) {
-      if (event.key === 'ArrowUp' && direction !== 'DOWN') direction = 'UP';
-      else if (event.key === 'ArrowDown' && direction !== 'UP') direction = 'DOWN';
-      else if (event.key === 'ArrowLeft' && direction !== 'RIGHT') direction = 'LEFT';
-      else if (event.key === 'ArrowRight' && direction !== 'LEFT') direction = 'RIGHT';
-    }
+                if (direction === 'UP') head.y -= box;
+                else if (direction === 'DOWN') head.y += box;
+                else if (direction === 'LEFT') head.x -= box;
+                else if (direction === 'RIGHT') head.x += box;
 
-    function drawSnake() {
-      for (let i = 0; i < snake.length; i++) {
-        ctx.fillStyle = i === 0 ? 'lime' : 'white';
-        ctx.fillRect(snake[i].x, snake[i].y, box, box);
-        ctx.strokeStyle = 'black';
-        ctx.strokeRect(snake[i].x, snake[i].y, box, box);
-      }
-    }
+                if (head.x === food.x && head.y === food.y) {
+                    score++;
+                    document.getElementById('score').textContent = score;
+                    food = {
+                        x: Math.floor(Math.random() * 19) * box,
+                        y: Math.floor(Math.random() * 19) * box
+                    };
+                } else {
+                    snake.pop();
+                }
 
-    function moveSnake() {
-      let head = { x: snake[0].x, y: snake[0].y };
+                snake.unshift(head);
+            }
 
-      if (direction === 'UP') head.y -= box;
-      else if (direction === 'DOWN') head.y += box;
-      else if (direction === 'LEFT') head.x -= box;
-      else if (direction === 'RIGHT') head.x += box;
+            function checkCollision() {
+                for (let i = 1; i < snake.length; i++) {
+                    if (snake[0].x === snake[i].x && snake[0].y === snake[i].y) return true;
+                }
+                return snake[0].x < 0 || snake[0].x >= canvas.width || snake[0].y < 0 || snake[0].y >= canvas.height;
+            }
 
-      if (head.x === food.x && head.y === food.y) {
-        score++;
-        document.getElementById('score').textContent = score;
-        food = {
-          x: Math.floor(Math.random() * 19) * box,
-          y: Math.floor(Math.random() * 19) * box
-        };
-      } else {
-        snake.pop();
-      }
+            function drawFood() {
+                ctx.fillStyle = 'red';
+                ctx.fillRect(food.x, food.y, box, box);
+            }
 
-      snake.unshift(head);
-    }
+            function gameLoop() {
+                if (checkCollision()) {
+                    alert('Game Over! Your score is ' + score);
+                    setTimeout(() => {
+                        location.reload();  // Automatically reload the page after a short delay
+                    }, 1000);
+                } else {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    drawSnake();
+                    drawFood();
+                    moveSnake();
+                }
+            }
 
-    function checkCollision() {
-      for (let i = 1; i < snake.length; i++) {
-        if (snake[0].x === snake[i].x && snake[0].y === snake[i].y) return true;
-      }
-      return snake[0].x < 0 || snake[0].x >= canvas.width || snake[0].y < 0 || snake[0].y >= canvas.height;
-    }
-
-    function drawFood() {
-      ctx.fillStyle = 'red';
-      ctx.fillRect(food.x, food.y, box, box);
-    }
-
-    function gameLoop() {
-      if (checkCollision()) {
-        alert('Game Over! Your score is ' + score);
-        setTimeout(() => {
-          location.reload();  // Automatically reload the page after a short delay
-        }, 1000);
-      } else {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        drawSnake();
-        drawFood();
-        moveSnake();
-      }
-    }
-
-    setInterval(gameLoop, 100);
-  </script>
-
-    
+            setInterval(gameLoop, 100);
+        </script>
     </section>
-    <br>
-    <br>
-    <br>
+
     <footer>
         <div class="container">
             <p>&copy; 2024 Barkei.lol. All rights reserved.</p>
