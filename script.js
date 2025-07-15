@@ -85,9 +85,9 @@ ctrl.addBinding(config, 'debug', {
 ctrl.addBinding(config, 'theme', {
   label: 'Theme',
   options: {
-    System: 'system',
-    Light: 'light',
-    Dark: 'dark',
+   // System: 'system',
+   // Light: 'light',
+   // Dark: 'dark',
   },
 })
 
